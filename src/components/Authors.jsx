@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { ALL_AUTHORS } from '../queries';
+import EditAuthorForm from './EditAuthorForm';
 
 /* eslint-disable react/prop-types */
 const Authors = (props) => {
@@ -37,6 +38,7 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
+      <EditAuthorForm show={props.show} />
     </div>
   )
 }
