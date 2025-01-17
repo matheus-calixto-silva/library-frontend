@@ -4,7 +4,7 @@ import { ALL_AUTHORS } from '../queries';
 /* eslint-disable react/prop-types */
 const Authors = (props) => {
   const result = useQuery(ALL_AUTHORS)
-  const authors = result.data.allAuthors
+  const authors = result?.data?.allAuthors
 
   if (!props.show) {
     return null
@@ -14,6 +14,9 @@ const Authors = (props) => {
     return <div>loading...</div>;
   }
 
+  if(!authors) {
+    return <div>No authors registered</div>
+  }
 
   return (
     <div>
