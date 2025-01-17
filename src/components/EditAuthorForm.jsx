@@ -37,20 +37,32 @@ const EditAuthorForm = (props) => {
     <div>
       <form onSubmit={submit}>
         <div>
-          name
-          <input
+          <label htmlFor="author-select">Author</label>
+          <select
+            id="author-select"
             value={name}
             onChange={({ target }) => setName(target.value)}
-          />
+          >
+            <option value="" disabled>
+              Select an author
+            </option>
+            {props.authors.map((author) => (
+              <option key={author.name} value={author.name}>
+                {author.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
-          born
+          <label htmlFor="born-input">Year of Birth</label>
           <input
+            id="born-input"
+            type="number"
             value={born}
             onChange={({ target }) => setBorn(target.value)}
           />
         </div>
-        <button type='submit'>update author</button>
+        <button type="submit">Update Author</button>
       </form>
     </div>
   );
