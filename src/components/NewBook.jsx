@@ -1,31 +1,45 @@
-import { useState } from 'react'
+/* eslint-disable react/prop-types */
+import { useMutation } from '@apollo/client';
+import { useState } from 'react';
+import { ALL_BOOKS, CREATE_BOOK } from '../queries';
 
 const NewBook = (props) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [published, setPublished] = useState('')
-  const [genre, setGenre] = useState('')
-  const [genres, setGenres] = useState([])
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [published, setPublished] = useState('');
+  const [genre, setGenre] = useState('');
+  const [genres, setGenres] = useState([]);
 
-  if (!props.show) {
-    return null
-  }
-
+  
+  const [createBook] = useMutation(CREATE_BOOK, {
+    refetchQueries: [{ query: ALL_BOOKS }],
+    onError: (error) => {
+      const messages = error.graphQLErrors.map((e) => e.message).join('\n');
+      props.setError(messages);
+    },
+  });
+  
   const submit = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
-    console.log('add book...')
+    console.log('add book...');
 
-    setTitle('')
-    setPublished('')
-    setAuthor('')
-    setGenres([])
-    setGenre('')
-  }
+    createBook({ variables: { title, author, published: parseInt(published), genres } });
+
+    setTitle('');
+    setPublished('');
+    setAuthor('');
+    setGenres([]);
+    setGenre('');
+  };
 
   const addGenre = () => {
-    setGenres(genres.concat(genre))
-    setGenre('')
+    setGenres(genres.concat(genre));
+    setGenre('');
+  };
+
+  if (!props.show) {
+    return null;
   }
 
   return (
@@ -48,7 +62,7 @@ const NewBook = (props) => {
         <div>
           published
           <input
-            type="number"
+            type='number'
             value={published}
             onChange={({ target }) => setPublished(target.value)}
           />
@@ -58,15 +72,15 @@ const NewBook = (props) => {
             value={genre}
             onChange={({ target }) => setGenre(target.value)}
           />
-          <button onClick={addGenre} type="button">
+          <button onClick={addGenre} type='button'>
             add genre
           </button>
         </div>
         <div>genres: {genres.join(' ')}</div>
-        <button type="submit">create book</button>
+        <button type='submit'>create book</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default NewBook
+export default NewBook;
