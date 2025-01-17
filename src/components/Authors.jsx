@@ -1,8 +1,19 @@
+import { useQuery } from '@apollo/client';
+import { ALL_AUTHORS } from '../queries';
+
+/* eslint-disable react/prop-types */
 const Authors = (props) => {
+  const result = useQuery(ALL_AUTHORS)
+  const authors = result.data.allAuthors
+
   if (!props.show) {
     return null
   }
-  const authors = []
+
+  if(result.loading) {
+    return <div>loading...</div>;
+  }
+
 
   return (
     <div>
